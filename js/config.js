@@ -5,6 +5,6 @@ window._config = {
         region: 'ap-northeast-1' 
     },
     api: {
-        invokeUrl: '' 
+        invokeUrl: 'https://qdwkyfxnq5.execute-api.ap-northeast-1.amazonaws.com/prod' 
     }
 };
