@@ -2,6 +2,10 @@
 <html>
 <head>
     <title>Wild Rydes - Register</title>
+    <!-- AWSと通信するための大事なプログラムを読み込みます -->
+    <script src="https://jquery.com"></script>
+    </script>
+    <script src="js/config.js"></script>
 </head>
 <body>
     <h2>Create Account</h2>
@@ -10,6 +14,26 @@
         <input type="password" id="passwordInput" placeholder="Password" required><br><br>
         <button type="submit">Register</button>
     </form>
+
+    <script>
+        // ボタンが押されたときにAWS（Cognito）へデータを送る処理です
+        $('#registrationForm').on('submit', function(e) {
+            e.preventDefault();
+            var email = $('#emailInput').val();
+            var password = $('#passwordInput').val();
+            
+            var poolData = { UserPoolId: window._config.cognito.userPoolId, ClientId: window._config.cognito.userPoolClientId };
+            var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+            var attributeList = [new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'email', Value: email })];
+
+            userPool.signUp(email, password, attributeList, null, function(err, result) {
+                if (err) {
+                    alert(err.message || JSON.stringify(err));
+                    return;
+                }
+                alert('登録成功！メールに届いた検証コードを確認してください。');
+            });
+        });
+    </script>
 </body>
 </html>
-
